@@ -1,0 +1,41 @@
+UserID,FavoriteGenres,WatchedMovies,EvaluationMoviesTheyWillLike,AvgDescriptionReadTimeSeconds,ProfileType
+U01,"Action, Crime, Thriller","Ronny Chieng: Speakeasy, A Cinderella Story, Hickok, Bread Barbershop, Once Upon a Time in America","Power Rangers Lost Galaxy, Puppy Star Christmas, Doubles Cause Troubles",14,Action/Crime
+U02,"Action, Sci-Fi","No Good Nick, Rica, Famosa, Latina, E-Team, Comedians in Cars Getting Coffee, The C Word","Scary Movie 5, Jack Whitehall: Christmas with My Father, Pecados capitales",55,Action/Sci-Fi
+U03,"Comedy, Romance","Thalaivii, Monty Python: The Meaning of Live, Panic Room, Life of Crime, Inkaar","Schitt's Creek, Undefeated, The Quick and the Dead",20,Comedy/Romance
+U04,"Drama, Romance, Mystery","Déjà Vu, Love in a Puff, Elevator Baby, Survivors Guide to Prison, Marco Luque - We are together","Killer Cove, Casting JonBenet, Hard Kill",19,Drama/Romance
+U05,"Sci-Fi, Thriller","Myths & Monsters, The Burial of Kojo, Macchli Jal Ki Rani Hai, Strong, B.A. Pass 2","El Mago Pop, Raees, My Girl",38,Sci-Fi/Thriller
+U06,"Fantasy, Adventure, Family","Earth to Echo, Suburra, Home, My Ex-Ex, Rainbow Rangers","The Stand In, THE RUM DIARY, _SAINT SEIYA: Knights of the Zodiac",28,Fantasy/Adventure
+U07,"Animation, Family","Trippin’ with the Kandasamys, VeggieTales in the City, Jim Norton: Mouthful of Shame, Green Frontier, Thorne: Scaredy Cat","Closed Circuit, The November Man, Mona Lisa Smile",24,Animation/Family
+U08,"Horror, Thriller","Interrogation, Baby, A Cinderella Story: Christmas Wish, Awakenings, New York Minute","How to Change the World, The IT Crowd, Forrest Gump",38,Horror/Thriller
+U09,"Mystery, Crime","The Chair, Who's That Knocking at My Door?, Cop Watchers, Welcome to New York, Brij Mohan Amar Rahe","Justice, My Foot!, The Last Resort, 7 Din Mohabbat In",40,Mystery/Crime
+U10,"Drama, Mystery, Romance","Surf's Up, The Edge of Democracy, Followers, Next, StarBeam: Beaming in the New Year","Aashik Aawara, Cleaner, Yo-Kai Watch: The Movie",37,Drama/Meaningful
+U11,"Action, Crime, Thriller","Burn Out, Aaviri, Sei, Wild Wild Country, Jim Gaffigan: King Baby","Sexy Central, For Greater Glory, We Are Legends",35,Action/Crime
+U12,"Action, Sci-Fi","American Crime Story: The People v. O.J. Simpson, Arrested Development, Bheeshma, Deaf U, Dharmakshetra","Shooter, 42 Grams, G.O.R.A",16,Action/Sci-Fi
+U13,"Comedy, Romance, Family","Fitoor, Kevin Hart: I'm a Grown Little Man, Oprah Presents When They See Us Now, Tim Minchin and the Heritage Orchestra: Live at the Royal Albert Hall, Spectros","Love You to the Stars and Back, The Blind Christ, Mohenjo Daro",45,Comedy/Romance
+U14,"Drama, Romance, Mystery","Silver Linings Playbook, Gaddar: the Traitor, YOM, Jo Koy: In His Elements, Demetri Martin: Live (At the Time)","Get Santa, Champions, The Christmas Chronicles: Part Two",26,Drama/Romance
+U15,"Sci-Fi, Thriller, Mystery","The Lonely Island Presents: The Unauthorized Bash Brothers Experience, The Imitation Game, Car Masters: Rust to Riches, Mexico Diseña, Four Sisters Before the Wedding","Finally Found Someone, Bobby Robson: More Than a Manager, Aziz Ansari: Right Now",35,Sci-Fi/Thriller
+U16,"Fantasy, Adventure","Wheels of Fortune, Space Jungle, Twenty Somethings: Austin, Age of Glory, Selling Tampa","The Sinking Of Van Der Wijck, Hospital, Natalia Valdebenito: Gritona",50,Fantasy/Adventure
+U17,"Animation, Family, Adventure","The Goop Lab, Yaksha: Ruthless Operations, And Breathe Normally, Blackway, Screwball","The Ranch, League of Legends Origins, Cinta 100KG",45,Animation/Family
+U18,"Horror, Thriller","Dr. Seuss' The Cat in the Hat, Nightbooks, Revenge of the Pontianak, Talking Tom and Friends, Horror Story","Ainsley Eats the Streets, Burnistoun, Under the Riccione Sun",14,Horror/Thriller
+U19,"Mystery, Crime, Thriller","The Could've-Gone-All-the-Way Committee, Bilu Rakkhosh, Band of Robbers, Dismissed, Wolverine","History 101, Murder Among the Mormons, Winter on Fire: Ukraine's Fight for Freedom",32,Mystery/Crime
+U20,"Drama, Mystery, Sci-Fi","The Big Shot Game Show, Happy Go Lucky, Standoff, Swap Shop, A Kind of Murder","Love in a Puff, Un + une, Young Tiger",31,Drama/Meaningful
+U21,"Action, Crime, Adventure","The Nutcracker and the Four Realms, Girls Incarcerated, Trust No One: The Hunt for the Crypto King, Tales From the Hood 2, Mama's Boy","Superman Returns, Cheese in the Trap, All The Reasons To Forget",32,Action/Crime
+U22,"Action, Sci-Fi","Martial Arts of Shaolin, The Rezort, The Christmas Chronicles: Part Two, Desperados, Last Man Down","The Fighter, Nightcrawler, Hollow Man",45,Action/Sci-Fi
+U23,"Comedy, Romance, Drama","Super Drags, Bo Burnham: what., Jane the Virgin, Yo-Kai Watch, Wild Oats","Overnight Republic, God Eater, Merantau",34,Comedy/Romance
+U24,"Drama, Romance, Comedy","Bittoo Boss, Fracture, Let's Eat 2, B: The Beginning, Oththa Seruppu Size 7","Haseena Maan Jaayegi, Cooking With Paris, The Crime",55,Drama/Romance
+U25,"Sci-Fi, Thriller, Action","The Prince of Tennis ~ Match! Tennis Juniors ~, The (Silent) War, Messiah, Hype House, Paranoid","Toon, Sardaar ji, Call the Midwife",35,Sci-Fi/Thriller
+U26,"Fantasy, Adventure, Action","The Golden Years with Javed Akhtar, Kitten Rescuers, Rebirth, Camera Store, Shiva: The Secret World Of Vedas City","Legacy of Lies, The Swarm, Women Behind Bars",35,Fantasy/Adventure
+U27,"Animation, Family, Adventure","Game, Coronavirus, Explained, Cheese in the Trap, Bosta, Deewana Main Deewana","Invisible Essence: The Little Prince, Kappela, New Year's Eve",16,Animation/Family
+U28,"Horror, Thriller, Crime","Baby Mamas, Balto, The Last Summer, Magnolia, Children of the Sea","Alone, Wait, My Youth, Mythily Veendum Varunnu",30,Horror/Thriller
+U29,"Mystery, Crime","Decoupled, Feria: The Darkest Light, Community, The Gentlemen's League, We Speak Dance","I'm Sorry, Guru, Marlon Wayans: Woke-ish",32,Mystery/Crime
+U30,"Drama, Mystery, Romance","James Acaster: Repertoire, Jimmy Neutron: Boy Genius, The Forest of Love: Deep Cut, Stateless, Helix","The Privilege, Arrested Development, Dick Johnson Is Dead",32,Drama/Meaningful
+U31,"Action, Crime, Thriller","Stolen Away, La Piloto, Yara, Valentino, Civilizations","Come Sunday, Getting Played, Leah Remini: Scientology and the Aftermath",14,Action/Crime
+U32,"Action, Sci-Fi, Adventure","Suicide (Hitabdut), Hank: Five Years from the Brink, Samantaral, Beckett, Shine Your Eyes","Oxygen, Christmas Wedding Planner, Toast of London",16,Action/Sci-Fi
+U33,"Comedy, Romance","The Five, The First Temptation of Christ, Anchor and Hope, King Jack, Jessica Darling's It List","Best of Stand-up 2020, The Mind of a Chef, Payday",22,Comedy/Romance
+U34,"Drama, Romance, Comedy","Occupation, Brian Regan: On the Rocks, Trinkets, Botched Up Bodies, Single All the Way","Clash of the Titans, Confessions of an Invisible Girl, City in the Sky",40,Drama/Romance
+U35,"Sci-Fi, Thriller","Knock Down The House, The Rite, Show Me the Money, Only, Chris Rock: Tamborine","Samurai Gourmet, B_hubali: The Beginning, Heal",38,Sci-Fi/Thriller
+U36,"Fantasy, Adventure, Action","Michael Clayton, Archibald's Next Big Thing, Friend Request, Leyla and Mecnun, Raja Hindustani","Word Party Presents: Math!, Ferrari Ki Sawaari, The Truth Seekers",22,Fantasy/Adventure
+U37,"Animation, Family","The Alpinist, Nappily Ever After, Kingdom, Madame Claude, M8 - When Death Rescues Life","Earth's Natural Wonders, The Binding, Sense8",38,Animation/Family
+U38,"Horror, Thriller","The spiral, Roonpi Secret Love, Grand-Daddy Day Care, Rush: Beyond the Lighted Stage, The Ugly Truth","JJ+E, The Workshop, Blown Away: Christmas",14,Horror/Thriller
+U39,"Mystery, Crime","Cat Burglar, Ready to Mingle, Power Rangers S.P.D., Di Renjie zhi Sidatianwang, NOVA: Building Chernobyl's MegaTomb","Bleach the Movie: Hell Verse, Francesco De Carlo: Cose di Questo Mondo, The Iron Lady",37,Mystery/Crime
+U40,"Drama, Mystery, Romance","Dennis & Gnasher Unleashed!, Castle of Stars, Njan Prakashan, Camarón Revolution, 24 Hours to Live","The Confirmation, Glow Up: Britain's Next Make-Up Star, DRAGON PILOT: Hisone & Masotan",19,Drama/Meaningful

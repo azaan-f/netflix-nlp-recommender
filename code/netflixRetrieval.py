@@ -52,6 +52,7 @@ class netflixRetrieval():
 
         return watched_titles
     
+
     # get eval movies helper
     def get_eval_titles(self, user_id):
         user_row = self.get_user_row(user_id)
@@ -59,6 +60,7 @@ class netflixRetrieval():
 
         eval_titles = [title.strip() for title in eval_movies.split(",") if title.strip()]
         return eval_titles
+
 
     # normalizer
     def normalize(self, text):
@@ -181,6 +183,20 @@ class netflixRetrieval():
         return relevances
     
 
+    # precision component
+    def precision_at_k(self, user_id, k=5, title_col="title", text_col="description"):
+        recs_df = self.recommend_for_user(user_id, k=k, title_col=title_col, text_col=text_col)
+        recommended_titles = recs_df[title_col].tolist()
+
+        eval_titles = set(self.get_eval_titles(user_id))
+
+        if k == 0:
+            return 0.0
+
+        hits = sum(1 for title in recommended_titles if title in eval_titles)
+        return hits / k
+
+
     # user profile function that returns the combined descriptions of the movies a user has watched
     def build_user_profile(self, user_id, title_col="title", text_col="description"):
         watched_titles = self.get_watched_movies(user_id)
@@ -237,5 +253,8 @@ if __name__ == "__main__":
 
     print("\nVocabulary size:", len(netflix.vocab))
 
-    print("\nTop 5 recommendations for U01:")
-    print(netflix.recommend_for_user("U01"))
+    print("\nRecommended movies for U01:")
+    print(netflix.recommend_for_user("U01", k=5))
+
+    print("\nPrecision @ 5 for U01:")
+    print(netflix.precision_at_k("U01", k=5))

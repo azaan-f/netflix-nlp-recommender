@@ -15,14 +15,11 @@ class netflixRetrieval():
     def __init__(self):
         # csvs from the dataset folder
         title_url = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/netflix_titles.csv'
-        title_url2 = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/titles.csv' # larger of the two i believe
+        # title_url2 = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/titles.csv' # larger of the two i believe
         users = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/users.csv'
 
         titles_df = pd.read_csv(title_url) # swap if necessary
         users_df = pd.read_csv(users, encoding="latin1")
-
-        # punctuation/stop word logic
-        self.punctuations = '"\,<>./?@#$%^&*_~/!()-[]{};:'
 
         try:
             _ = stopwords.words('english')
@@ -38,7 +35,7 @@ class netflixRetrieval():
 
     # get user helper function
     def get_user_row(self, user_id):
-        row = self.user_dataset[self.user_dataset['user_id'] == user_id]
+        row = self.user_dataset[self.user_dataset['UserID'] == user_id]
 
         if row.empty:
             raise ValueError(f"user_id {user_id} not found")
@@ -185,7 +182,9 @@ class netflixRetrieval():
         if watched_rows.empty:
             return ""
         
-        profile_text = " ".join(watched_rows[text_col].fillna("").astype(str)).tolist()
+        profile_text = " ".join(
+            watched_rows[text_col].fillna("").astype(str).tolist()
+        )
     
         return self.normalize(profile_text)
     
@@ -195,11 +194,11 @@ class netflixRetrieval():
         user_profile = self.build_user_profile(user_id, title_col=title_col, text_col=text_col)
 
         if not user_profile:
-            return pd.DataFrame(columns=[title_col, text_col])
+            return pd.DataFrame(columns=[title_col, text_col, "score"])
 
         self.compute_IDF(self.dataset.shape[0], self.dataset[text_col])
 
-        watched_titles = set(self.get_watched_titles(user_id))
+        watched_titles = set(self.get_watched_movies(user_id))
 
         relevances = np.zeros(self.dataset.shape[0])
 
@@ -240,3 +239,6 @@ if __name__ == "__main__":
     scores_tfidf = netflix.execute_search_TF_IDF("crime family mafia")
     top_idx = np.argsort(scores_tfidf)[::-1][:5]
     print(netflix.dataset.iloc[top_idx][["title", "description"]])
+
+    print("\nTop 5 recommendations for U01:")
+    print(netflix.recommend_for_user("U01"))

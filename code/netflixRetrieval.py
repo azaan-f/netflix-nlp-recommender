@@ -43,7 +43,17 @@ class netflixRetrieval():
             raise ValueError(f"user_id {user_id} not found")
         
         return row.iloc[0]
+    
 
+    # get watched movies helper
+    def get_watched_movies(self, user_id):
+        user_row = self.get_user_row(user_id)
+        watched = str(user_row["WatchedMovies"])
+
+        watched_titles = [title.strip() for title in watched.split(",") if title.strip()]
+
+        return watched_titles
+    
     # normalizer
     def normalize(self, text):
         text = "" if text is None else str(text)

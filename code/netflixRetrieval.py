@@ -19,6 +19,7 @@ class netflixRetrieval():
         users = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/users.csv'
 
         titles_df = pd.read_csv(title_url) # swap if necessary
+        users_df = pd.read_csv(users, encoding="latin1")
 
         # punctuation/stop word logic
         self.punctuations = '"\,<>./?@#$%^&*_~/!()-[]{};:'
@@ -31,7 +32,17 @@ class netflixRetrieval():
         self.stop_words = set(stopwords.words('english'))
 
         self.dataset = titles_df
+        self.user_dataset = users_df
 
+
+    # get user helper function
+    def get_user_row(self, user_id):
+        row = self.user_dataset[self.user_dataset['user_id'] == user_id]
+
+        if row.empty:
+            raise ValueError(f"user_id {user_id} not found")
+        
+        return row.iloc[0]
 
     # normalizer
     def normalize(self, text):

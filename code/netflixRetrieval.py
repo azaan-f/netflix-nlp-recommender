@@ -52,6 +52,13 @@ class netflixRetrieval():
 
         return watched_titles
     
+    # get eval movies helper
+    def get_eval_titles(self, user_id):
+        user_row = self.get_user_row(user_id)
+        eval_movies = str(user_row["EvaluationMoviesTheyWillLike"])
+
+        eval_titles = [title.strip() for title in eval_movies.split(",") if title.strip()]
+        return eval_titles
 
     # normalizer
     def normalize(self, text):
@@ -229,16 +236,6 @@ if __name__ == "__main__":
     netflix.build_vocabulary()
 
     print("\nVocabulary size:", len(netflix.vocab))
-
-    print("\nTop 5 results (Bit Vector):")
-    scores = netflix.execute_search_BitVec("crime family mafia")
-    top_idx = np.argsort(scores)[::-1][:5]
-    print(netflix.dataset.iloc[top_idx][["title", "description"]])
-
-    print("\nTop 5 results (TF-IDF):")
-    scores_tfidf = netflix.execute_search_TF_IDF("crime family mafia")
-    top_idx = np.argsort(scores_tfidf)[::-1][:5]
-    print(netflix.dataset.iloc[top_idx][["title", "description"]])
 
     print("\nTop 5 recommendations for U01:")
     print(netflix.recommend_for_user("U01"))

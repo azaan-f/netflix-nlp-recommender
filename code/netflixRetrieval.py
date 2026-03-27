@@ -54,6 +54,7 @@ class netflixRetrieval():
 
         return watched_titles
     
+
     # normalizer
     def normalize(self, text):
         text = "" if text is None else str(text)
@@ -173,6 +174,19 @@ class netflixRetrieval():
             relevances[i] = self.tfidf_score(query, doc)
 
         return relevances
+    
+
+    # user profile function that returns the combined descriptions of the movies a user has watched
+    def build_user_profile(self, user_id, title_col="title", text_col="description"):
+        watched_titles = self.get_watched_movies(user_id)
+        watched_rows = self.dataset[self.dataset[title_col].isin(watched_titles)]
+
+        if watched_rows.empty:
+            return ""
+        
+        profile_text = " ".join(watched_rows[text_col].fillna("").astype(str)).tolist()
+    
+        return self.normalize(profile_text)
     
 
 # ------- testing ------- #

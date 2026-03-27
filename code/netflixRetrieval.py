@@ -35,6 +35,7 @@ class netflixRetrieval():
         self.user_dataset = users_df
 
 
+
     # get user helper function
     def get_user_row(self, user_id):
         row = self.user_dataset[self.user_dataset['user_id'] == user_id]
@@ -187,6 +188,34 @@ class netflixRetrieval():
         profile_text = " ".join(watched_rows[text_col].fillna("").astype(str)).tolist()
     
         return self.normalize(profile_text)
+    
+
+    # actual recommendation function
+    def recommend_for_user(self, user_id, k=5, title_col="title", text_col="description"):
+        user_profile = self.build_user_profile(user_id, title_col=title_col, text_col=text_col)
+
+        if not user_profile:
+            return pd.DataFrame(columns=[title_col, text_col])
+
+        self.compute_IDF(self.dataset.shape[0], self.dataset[text_col])
+
+        watched_titles = set(self.get_watched_titles(user_id))
+
+        relevances = np.zeros(self.dataset.shape[0])
+
+        for i, doc in enumerate(self.dataset[text_col].fillna("").astype(str)):
+            relevances[i] = self.tfidf_score(user_profile, doc)
+
+        results = self.dataset.copy()
+        results["score"] = relevances
+
+        # exclude already watched titles
+        results = results[~results[title_col].isin(watched_titles)]
+
+        # sort descending
+        results = results.sort_values("score", ascending=False)
+
+        return results[[title_col, text_col, "score"]].head(k)
     
 
 # ------- testing ------- #

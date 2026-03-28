@@ -9,6 +9,7 @@ nltk.download('stopwords')
 import pandas as pd
 
 from nltk.corpus import stopwords
+from gensim.models import Word2Vec
 
 class netflixRetrieval():
 
@@ -97,7 +98,7 @@ class netflixRetrieval():
         return self.dataset
     
 
-    def build_vocabulary(self, text_col="description", max_words=200):
+    def build_vocabulary(self, text_col="description", max_words=5000):
         if self.dataset is None:
             raise Exception("data set not loaded")
     
@@ -194,37 +195,42 @@ class netflixRetrieval():
     
 
     # precision component
-    def precision_at_k(self, user_id, k=5, title_col="title", text_col="description"):
-        recs_df = self.recommend_for_user(user_id, k=k, title_col=title_col, text_col=text_col)
-        recommended_titles = recs_df[title_col].tolist()
-
-        eval_titles = self.get_eval_titles(user_id)
-
-        recommended_keys = [self.normalize(title) for title in recommended_titles]
-        eval_keys = set(self.normalize(title) for title in eval_titles)
+    def precision_at_k(self, user_id, k=5, title_col="title", text_col="description", recs_df=None):
+        if recs_df is None:
+            recs_df = self.recommend_for_user(user_id, k=k, title_col=title_col, text_col=text_col)
+    
+        recommended_keys = [self.normalize(t) for t in recs_df[title_col].tolist()]
+        eval_keys = set(self.normalize(t) for t in self.get_eval_titles(user_id))
 
         if k == 0:
             return 0.0
 
-        hits = sum(1 for title in recommended_keys if title in eval_keys)
+        hits = sum(1 for t in recommended_keys if t in eval_keys)
         return hits / k
 
 
     # recall component
-    def recall_at_k(self, user_id, k=5, title_col="title", text_col="description"):
-        recs_df = self.recommend_for_user(user_id, k=k, title_col=title_col, text_col=text_col)
-        recommended_titles = recs_df[title_col].tolist()
+    def recall_at_k(self, user_id, k=5, title_col="title", text_col="description", recs_df=None):
+        if recs_df is None:
+            recs_df = self.recommend_for_user(user_id, k=k, title_col=title_col, text_col=text_col)
 
-        eval_titles = self.get_eval_titles(user_id)
-
-        recommended_keys = [self.normalize(title) for title in recommended_titles]
-        eval_keys = set(self.normalize(title) for title in eval_titles)
+        recommended_keys = [self.normalize(t) for t in recs_df[title_col].tolist()]
+        eval_keys = set(self.normalize(t) for t in self.get_eval_titles(user_id))
 
         if len(eval_keys) == 0:
             return 0.0
 
-        hits = sum(1 for title in recommended_keys if title in eval_keys)
+        hits = sum(1 for t in recommended_keys if t in eval_keys)
         return hits / len(eval_keys)
+
+
+    def train_word2vec(self, text_col="description"): # based only on descriptions so far
+        sentences = [
+            doc.split() 
+            for doc in self.dataset[text_col].fillna("").astype(str)
+        ]
+        
+        self.w2v_model = Word2Vec(sentences, vector_size=100, window=5, min_count=1, workers=4)
 
 
     # user profile function that returns the combined descriptions of the movies a user has watched
@@ -286,11 +292,28 @@ if __name__ == "__main__":
 
     print("\nVocabulary size:", len(netflix.vocab))
 
+    # Add this to see if it's hanging here:
+    print("\nBuilding recommendations...")
+
+    recs = netflix.recommend_for_user("U02", k=5)
     print("\nRecommended movies for U02:")
-    print(netflix.recommend_for_user("U02", k=5))
+    print(recs)
 
     print("\nPrecision @ 5 for U02:")
-    print(netflix.precision_at_k("U02", k=5))
+    print(netflix.precision_at_k("U02", k=5, recs_df=recs))
 
     print("\nRecall @ 5 for U02:")
-    print(netflix.recall_at_k("U02", k=5))
+    print(netflix.recall_at_k("U02", k=5, recs_df=recs))
+
+    print("\nEval titles for U02:")
+    print(netflix.get_eval_titles("U02"))
+
+    print("\nRecommended titles (normalized):")
+    print([netflix.normalize(t) for t in recs["title"].tolist()])
+
+    print("\nEval titles (normalized):")
+    print([netflix.normalize(t) for t in netflix.get_eval_titles("U02")])
+
+    eval_keys = set(netflix.normalize(t) for t in netflix.get_eval_titles("U02"))
+    matches = netflix.dataset[netflix.dataset["title_key"].isin(eval_keys)]
+    print("Eval titles found in dataset:", matches["title"].tolist())

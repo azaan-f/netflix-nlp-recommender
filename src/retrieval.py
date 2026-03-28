@@ -37,17 +37,17 @@ class retrieval:
         actor_sim = float(ft.text2TFIDF(actor_profile).dot(ft.text2TFIDF(doc_cast)))
  
         return (
-            self.W_TFIDF  * tfidf_sim +
-            self.W_W2V    * w2v_sim   +
-            self.W_GENRE  * genre_sim +
-            self.W_ACTORS * actor_sim
+            self.w_tfidf  * tfidf_sim +
+            self.w_w2v    * w2v_sim   +
+            self.w_genre  * genre_sim +
+            self.w_actors * actor_sim
         )
     
     
     # actual recommendation function
     def recommend_for_user(self, user_id, k=5, title_col="title"):
         desc_profile, genre_profile, actor_profile = (
-            self.user_profile.build_all(user_id)
+            self.user_profiles.build_all(user_id)
         )
  
         if not desc_profile:

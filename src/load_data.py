@@ -14,8 +14,8 @@ class load_data:
     users = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/users.csv'
 
     def __init__(self):
-        self.title_dataset = pd.read_csv(self.title_url)
-        self.users_dataset = pd.read_csv(self.users, encoding='latin-1')
+        self.dataset = pd.read_csv(self.title_url)
+        self.user_dataset = pd.read_csv(self.users, encoding='latin-1')
 
         self.stop_words = set(stopwords.words('english'))
 

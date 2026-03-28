@@ -31,7 +31,7 @@ class features:
         return self
     
 
-    def compute_IDF(self,M,collection):
+    def compute_IDF(self, collection):
         M = len(collection)
         self.IDF = np.zeros(self.vocab.size) # initialize the IDFs to zero
         doc_sets = [set(self.normalize(doc).split()) for doc in collection.fillna("").astype(str)]

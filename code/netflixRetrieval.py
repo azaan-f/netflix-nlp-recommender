@@ -75,6 +75,10 @@ class netflixRetrieval():
         return " ".join(tokens)
     
 
+    def normalize_title_list(self, titles):
+        return set(self.normalize(title) for title in titles if str(title).strip())
+    
+    
     def preprocess_descriptions(self, description_col="description"):
         self.dataset[description_col] = (
             self.dataset[description_col]
@@ -187,12 +191,15 @@ class netflixRetrieval():
         recs_df = self.recommend_for_user(user_id, k=k, title_col=title_col, text_col=text_col)
         recommended_titles = recs_df[title_col].tolist()
 
-        eval_titles = set(self.get_eval_titles(user_id))
+        eval_titles = self.get_eval_titles(user_id)
+
+        recommended_keys = [self.normalize(title) for title in recommended_titles]
+        eval_keys = set(self.normalize(title) for title in eval_titles)
 
         if k == 0:
             return 0.0
 
-        hits = sum(1 for title in recommended_titles if title in eval_titles)
+        hits = sum(1 for title in recommended_keys if title in eval_keys)
         return hits / k
 
 
@@ -201,12 +208,15 @@ class netflixRetrieval():
         recs_df = self.recommend_for_user(user_id, k=k, title_col=title_col, text_col=text_col)
         recommended_titles = recs_df[title_col].tolist()
 
-        eval_titles = set(self.get_eval_titles(user_id))
+        eval_titles = self.get_eval_titles(user_id)
 
-        if len(eval_titles) == 0:
+        recommended_keys = [self.normalize(title) for title in recommended_titles]
+        eval_keys = set(self.normalize(title) for title in eval_titles)
+
+        if k == 0:
             return 0.0
 
-        hits = sum(1 for title in recommended_titles if title in eval_titles)
+        hits = sum(1 for title in recommended_keys if title in eval_keys)
         return hits / len(eval_titles)
 
 

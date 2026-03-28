@@ -233,6 +233,22 @@ class netflixRetrieval():
         self.w2v_model = Word2Vec(sentences, vector_size=100, window=5, min_count=1, workers=4)
 
 
+    # returns the average word vector for the text, or a zero vector if no words are in the model
+    def text2W2V(self, text):  # average word vectors = doc vector
+        tokens = self.normalize(text).split()
+
+        vecs = [
+            self.w2v_model.wv[t] 
+            for t in tokens 
+            if t in self.w2v_model.wv
+        ]
+
+        if not vecs:
+            return np.zeros(self.w2v_model.vector_size)
+        
+        return np.mean(vecs, axis=0)
+
+
     # user profile function that returns the combined descriptions of the movies a user has watched
     def build_user_profile(self, user_id, title_col="title", text_col="description"):
         watched_titles = self.get_watched_movies(user_id)

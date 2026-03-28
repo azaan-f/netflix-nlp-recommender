@@ -31,6 +31,13 @@ class netflixRetrieval():
         self.dataset = titles_df
         self.user_dataset = users_df
 
+        self.dataset["title_key"] = (
+            self.dataset["title"]
+            .fillna("")
+            .astype(str)
+            .apply(self.normalize)
+        )
+
 
     # get user helper function
     def get_user_row(self, user_id):
@@ -213,17 +220,19 @@ class netflixRetrieval():
         recommended_keys = [self.normalize(title) for title in recommended_titles]
         eval_keys = set(self.normalize(title) for title in eval_titles)
 
-        if k == 0:
+        if len(eval_keys) == 0:
             return 0.0
 
         hits = sum(1 for title in recommended_keys if title in eval_keys)
-        return hits / len(eval_titles)
+        return hits / len(eval_keys)
 
 
     # user profile function that returns the combined descriptions of the movies a user has watched
     def build_user_profile(self, user_id, title_col="title", text_col="description"):
         watched_titles = self.get_watched_movies(user_id)
-        watched_rows = self.dataset[self.dataset[title_col].isin(watched_titles)]
+        watched_keys = set(self.normalize(title) for title in watched_titles)
+        
+        watched_rows = self.dataset[self.dataset["title_key"].isin(watched_keys)]
 
         if watched_rows.empty:
             return ""
@@ -245,6 +254,7 @@ class netflixRetrieval():
         self.compute_IDF(self.dataset.shape[0], self.dataset[text_col])
 
         watched_titles = set(self.get_watched_movies(user_id))
+        watched_keys = set(self.normalize(title) for title in watched_titles)
 
         relevances = np.zeros(self.dataset.shape[0])
 
@@ -255,7 +265,7 @@ class netflixRetrieval():
         results["score"] = relevances
 
         # exclude already watched titles
-        results = results[~results[title_col].isin(watched_titles)]
+        results = results[~results["title_key"].isin(watched_keys)]
 
         # sort descending
         results = results.sort_values("score", ascending=False)
@@ -276,11 +286,11 @@ if __name__ == "__main__":
 
     print("\nVocabulary size:", len(netflix.vocab))
 
-    print("\nRecommended movies for U01:")
-    print(netflix.recommend_for_user("U01", k=5))
+    print("\nRecommended movies for U02:")
+    print(netflix.recommend_for_user("U02", k=5))
 
-    print("\nPrecision @ 5 for U01:")
-    print(netflix.precision_at_k("U01", k=5))
+    print("\nPrecision @ 5 for U02:")
+    print(netflix.precision_at_k("U02", k=5))
 
-    print("\nRecall @ 5 for U01:")
-    print(netflix.recall_at_k("U01", k=5))
+    print("\nRecall @ 5 for U02:")
+    print(netflix.recall_at_k("U02", k=5))

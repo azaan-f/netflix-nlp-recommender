@@ -32,7 +32,6 @@ class netflixRetrieval():
         self.user_dataset = users_df
 
 
-
     # get user helper function
     def get_user_row(self, user_id):
         row = self.user_dataset[self.user_dataset['UserID'] == user_id]
@@ -197,6 +196,20 @@ class netflixRetrieval():
         return hits / k
 
 
+    # recall component
+    def recall_at_k(self, user_id, k=5, title_col="title", text_col="description"):
+        recs_df = self.recommend_for_user(user_id, k=k, title_col=title_col, text_col=text_col)
+        recommended_titles = recs_df[title_col].tolist()
+
+        eval_titles = set(self.get_eval_titles(user_id))
+
+        if len(eval_titles) == 0:
+            return 0.0
+
+        hits = sum(1 for title in recommended_titles if title in eval_titles)
+        return hits / len(eval_titles)
+
+
     # user profile function that returns the combined descriptions of the movies a user has watched
     def build_user_profile(self, user_id, title_col="title", text_col="description"):
         watched_titles = self.get_watched_movies(user_id)
@@ -238,8 +251,8 @@ class netflixRetrieval():
         results = results.sort_values("score", ascending=False)
 
         return results[[title_col, text_col, "score"]].head(k)
-    
 
+    
 # ------- testing ------- #
 
 if __name__ == "__main__":
@@ -258,3 +271,6 @@ if __name__ == "__main__":
 
     print("\nPrecision @ 5 for U01:")
     print(netflix.precision_at_k("U01", k=5))
+
+    print("\nRecall @ 5 for U01:")
+    print(netflix.recall_at_k("U01", k=5))

@@ -62,7 +62,7 @@ class load_data:
     def preprocess_all_columns(self):
         for col in ("description", "listed_in", "cast"):
             self.preprocess_columns(col)
-        
+        self.optimizaiton()
         return self
     
 
@@ -89,3 +89,36 @@ class load_data:
         eval_movies = str(self.get_user_row(user_id)["EvaluationMoviesTheyWillLike"])
 
         return [t.strip() for t in eval_movies.split(",") if t.strip()]
+    
+
+    #function that builds up user data pre-model in order to limit localization of watched movie info 
+    def optimizaiton(self) : 
+        movDESC = []
+        movCAST = []
+        movGNRA = []
+        for i in range(len(self.user_dataset)): 
+            movWTCH = self.user_dataset["WatchedMovies"][i]
+            movWTCH = movWTCH.split(",")
+            movLS = []
+            for j in movWTCH: 
+                j = j.strip()
+                if j != "":
+                    movLS.append(j)
+            descTXT = ""
+            castTXT = ""
+            gnraTXT = ""
+            for t in movLS: 
+                tk = self.normalize(t)
+                disc = self.dataset[self.dataset["title_key"] == tk] 
+                if not disc.empty: 
+                    r = disc.iloc[0]
+                    descTXT = descTXT + " " + r["description"]
+                    castTXT = castTXT + " " + r["cast"]
+                    gnraTXT = gnraTXT + " " + r["listed_in"] 
+            movDESC.append(descTXT.strip())
+            movCAST.append(castTXT.strip())
+            movGNRA.append(gnraTXT.strip())
+        self.user_dataset["WatchedDescriptions"] = movDESC
+        self.user_dataset["WatchedCAST"] = movCAST
+        self.user_dataset["WatchedGENRE"] = movGNRA
+        return self

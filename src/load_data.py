@@ -13,7 +13,7 @@ class load_data:
     # title_url = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/netflix_titles.csv'
     # title_url2 = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/titles.csv' # larger of the two i believe
 
-    users = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/users.csv' # fixed with new movies
+    users = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/user-fix/datasets/fixed_user_data.csv' # fixed with new movies
 
     def __init__(self):
         self.dataset = pd.read_csv(self.title_url)
@@ -84,10 +84,10 @@ class load_data:
     def get_watched_movies(self, user_id): # should be a little cleaner
         watched = str(self.get_user_row(user_id)["WatchedMovies"])
 
-        return [t.strip() for t in watched.split(",") if t.strip()]
+        return [t.strip() for t in watched.split("|") if t.strip()]
     
 
     def get_eval_titles(self, user_id): # should be a little cleaner
         eval_movies = str(self.get_user_row(user_id)["EvaluationMoviesTheyWillLike"])
 
-        return [t.strip() for t in eval_movies.split(",") if t.strip()]
+        return [t.strip() for t in eval_movies.split("|") if t.strip()]

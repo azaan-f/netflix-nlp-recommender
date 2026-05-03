@@ -9,9 +9,11 @@ nltk.download('stopwords', quiet=True)
 
 class load_data:
     # csvs from the dataset folder
-    title_url = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/netflix_titles.csv'
+    title_url = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/new_titles.csv' # using the US filtered
+    # title_url = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/netflix_titles.csv'
     # title_url2 = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/titles.csv' # larger of the two i believe
-    users = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/users.csv'
+
+    users = 'https://raw.githubusercontent.com/azaan-f/netflix-nlp-recommender/main/datasets/users.csv' # fixed with new movies
 
     def __init__(self):
         self.dataset = pd.read_csv(self.title_url)
@@ -60,9 +62,9 @@ class load_data:
     
     # columns to preprocess
     def preprocess_all_columns(self):
-        for col in ("description", "listed_in", "cast"):
+        for col in ("description", "genres", "production_countries"):
             self.preprocess_columns(col)
-        self.optimizaiton()
+        
         return self
     
 
@@ -89,36 +91,3 @@ class load_data:
         eval_movies = str(self.get_user_row(user_id)["EvaluationMoviesTheyWillLike"])
 
         return [t.strip() for t in eval_movies.split(",") if t.strip()]
-    
-
-    #function that builds up user data pre-model in order to limit localization of watched movie info 
-    def optimizaiton(self) : 
-        movDESC = []
-        movCAST = []
-        movGNRA = []
-        for i in range(len(self.user_dataset)): 
-            movWTCH = self.user_dataset["WatchedMovies"][i]
-            movWTCH = movWTCH.split(",")
-            movLS = []
-            for j in movWTCH: 
-                j = j.strip()
-                if j != "":
-                    movLS.append(j)
-            descTXT = ""
-            castTXT = ""
-            gnraTXT = ""
-            for t in movLS: 
-                tk = self.normalize(t)
-                disc = self.dataset[self.dataset["title_key"] == tk] 
-                if not disc.empty: 
-                    r = disc.iloc[0]
-                    descTXT = descTXT + " " + r["description"]
-                    castTXT = castTXT + " " + r["cast"]
-                    gnraTXT = gnraTXT + " " + r["listed_in"] 
-            movDESC.append(descTXT.strip())
-            movCAST.append(castTXT.strip())
-            movGNRA.append(gnraTXT.strip())
-        self.user_dataset["WatchedDescriptions"] = movDESC
-        self.user_dataset["WatchedCAST"] = movCAST
-        self.user_dataset["WatchedGENRE"] = movGNRA
-        return self

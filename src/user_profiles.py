@@ -1,3 +1,6 @@
+import numpy as np
+import numpy.linalg as la
+
 
 class user_profiles:
 
@@ -13,49 +16,61 @@ class user_profiles:
         return self.dataset[self.dataset["title_key"].isin(watched_keys)]
  
 
-    # joins the column for the movies watched by the user and normalizes it
+    # helper to join the column for the movies watched by the user and normalize it
     def _join_col(self, rows, col):
         return self.normalize(
-            " ".join(rows[col].fillna("").astype(str).tolist())
+        " ".join(rows[col].fillna("").astype(str).tolist())
         )
+
+
+    # joins the column for the movies watched by the user and normalizes it
+    def _tfidf_profile_vector(self, rows, col, feat, idf=None):
+        vecs = [
+            feat.text2TFIDF(str(d), idf=idf)
+            for d in rows[col].fillna("").astype(str)
+        ]
+
+        if not vecs:
+            return np.zeros(feat.vocab.size)
+
+        avg = np.mean(vecs, axis=0)
+        norm = la.norm(avg)
+
+        return avg / norm if norm > 0 else avg
     
-
-    # i think these will help with the bugs since they will return empty strings 
-    # if the user has not watched any movies, rather than throwing an error when 
-    # trying to join an empty dataframe
-    def build_desc_profile(self, user_id):
-        rows = self._watched_rows(user_id)
-
-        if rows.empty:
-            return ""
-        
-        return self._join_col(rows, "description")
- 
 
     def build_genre_profile(self, user_id):
         rows = self._watched_rows(user_id)
-
         if rows.empty:
             return ""
-        
+        return self._join_col(rows, "genres")
+ 
+ 
+    def build_country_profile(self, user_id):
+        rows = self._watched_rows(user_id)
+        if rows.empty:
+            return ""
         return self._join_col(rows, "production_countries")
  
-
-    def build_actor_profile(self, user_id):
+    
+    # helper to join the column for the movies watched by the user and normalize it
+    def build_all(self, user_id, feat=None):
         rows = self._watched_rows(user_id)
-
-        if rows.empty:
-            return ""
-        
-        return self._join_col(rows, "cast")
  
-
-    def build_all(self, user_id):
-        rows = self._watched_rows(user_id)
-
         if rows.empty:
+            if feat is not None:
+                z = np.zeros(feat.vocab.size)
+                return z, z, z
             return "", "", ""
-        
+ 
+        if feat is not None:
+            return (
+                self._tfidf_profile_vector(rows, "description",          feat, idf=getattr(feat, "IDF_description", feat.IDF)),
+                self._tfidf_profile_vector(rows, "genres",               feat, idf=getattr(feat, "IDF_genres",       feat.IDF)),
+                self._tfidf_profile_vector(rows, "production_countries", feat, idf=getattr(feat, "IDF_country",      feat.IDF)),
+            )
+ 
+        # string fallback for debug printing
         return (
             self._join_col(rows, "description"),
             self._join_col(rows, "genres"),

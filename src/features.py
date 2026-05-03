@@ -1,6 +1,7 @@
 import math # for log in IDF computation
 import collections # for counting word frequencies
 import numpy as np
+import numpy.linalg as la
 
 from gensim.models import Word2Vec
 
@@ -17,28 +18,35 @@ class features:
         self.w2v_model: Word2Vec = None
 
 
-    def build_vocabulary(self, text_col="description", max_words=5000):
+    def build_vocabulary(self, max_words=5000):
         # count the ocurrance of the words in the dataset 
         count = collections.Counter()
 
-        for doc in self.dataset[text_col].fillna("").astype(str):
-            count.update(doc.split())
-
+        for col in ("description", "genres", "production_countries"):
+            for doc in self.dataset[col].fillna("").astype(str):
+                count.update(doc.split())
+ 
         self.vocab = np.array(
             [w for w, _ in count.most_common(max_words)], dtype=object
         )
-
+ 
+        # index lookup for fast vectorization
+        self._word2idx = {w: i for i, w in enumerate(self.vocab)}
+ 
         return self
     
-
-    def compute_IDF(self, collection):
+    # switching to a per-column IDF computation
+    def compute_IDF(self, collection, field="description"):
         M = len(collection)
-        self.IDF = np.zeros(self.vocab.size) # initialize the IDFs to zero
+        idf = np.zeros(self.vocab.size)
         doc_sets = [set(self.normalize(doc).split()) for doc in collection.fillna("").astype(str)]
 
         for i, w in enumerate(self.vocab):
             df = sum(1 for s in doc_sets if w in s)
-            self.IDF[i] = math.log((M + 1) / (df + 1)) + 1 # formula from slides
+            idf[i] = math.log((M + 1) / (df + 1)) + 1
+
+        setattr(self, f"IDF_{field}", idf)
+        self.IDF = idf  # keep default for backwards compat
 
 
     def text2BitVector(self,text):
@@ -53,21 +61,27 @@ class features:
     
 
     # returns the bit vector representation of the text
-    def text2TFIDF(self, text):
+    def text2TFIDF(self, text, normalize=True, idf=None):
         tokens = self.normalize(text).split()
-        tfidfVector = np.zeros(self.vocab.size, dtype=float)
+        vec = np.zeros(self.vocab.size, dtype=float)
 
         if not tokens:
-            return tfidfVector
-
+            return vec
+        
+        idf_weights = idf if idf is not None else self.IDF
         counts = collections.Counter(tokens) 
     
-        for i, w in enumerate(self.vocab):
-            tf = counts.get(w, 0)
-            if tf > 0:
-                tfidfVector[i] = tf * self.IDF[i]
+        for w, tf in counts.items():
+            idx = self._word2idx.get(w)
+            if idx is not None:
+                vec[idx] = tf * idf_weights[idx]
 
-        return tfidfVector
+        if normalize: # normalize the vector to unit length, which is common for cosine similarity
+            norm = la.norm(vec)
+            if norm > 0:
+                vec /= norm
+ 
+        return vec
     
 
     def tfidf_score(self, query, doc): # a little cleaner
@@ -100,4 +114,8 @@ class features:
         if not vecs:
             return np.zeros(self.w2v_model.vector_size)
         
-        return np.mean(vecs, axis=0)
+        # average the word vectors to get a single representation for the text
+        avg = np.mean(vecs, axis=0)
+        norm = np.linalg.norm(avg)
+ 
+        return avg / norm if norm > 0 else avg

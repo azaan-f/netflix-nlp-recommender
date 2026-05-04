@@ -14,25 +14,49 @@ The principal dataset used for this project comes from the GitHub repository [ka
 
 #### **Note — The version of the title dataset used in this project only uses a portion of the original data. It was filtered to include titles with United States production countries.* 
 
-The original dataset contains more than 5,000 unique Netflix titles and 15 metadata columns. For this project, a smaller subset of variables was used to build and evaluate the recommendation system. The title recommendation dataset and the synthetic dataset of 100 users were both built from the filtered title data. A description of the following used variables has been provided below, followed by a brief description of their primary function in relation to the project.
+The original dataset contains more than 5,000 unique Netflix titles and 15 metadata columns. For this project, a smaller subset of variables was used to build and evaluate the recommendation system. The title recommendation dataset and the synthetic dataset of 100 users were both built from the filtered title data. A description of the following used variables has been provided below, paired with a brief description of their primary function in relation to the project.
 
 #### Title Dataset:
 
-* **title**: Matches watched and evaluation movies to the title dataset.
-* **description**: Builds text-based similarity through TF-IDF and Word2Vec.
-* **genres**: Builds genre-based similarity and adds a genre-overlap boost.
-* **production_countries**: Supports country-profile similarity and the United States production-country filter.
+* **`title`**: Matches watched and evaluation movies to the title dataset.
+* **`description`**: Builds text-based similarity through TF-IDF and Word2Vec.
+* **`genres`**: Builds genre-based similarity and adds a genre-overlap boost.
+* **`production_countries`**: Supports country-profile similarity and the United States production-country filter.
 
 #### User Dataset:
-* **UserID**: Unique identifier for each user.
-* **WatchedMovies**: Titles used to build the user's recommendation profile.
-* **EvaluationMoviesTheyWillLike**: Held-out titles used to evaluate recommendation quality.
+* **`UserID`**: Unique identifier for each user.
+* **`WatchedMovies`**: Titles used to build the user's recommendation profile.
+* **`EvaluationMoviesTheyWillLike`**: Held-out titles used to evaluate recommendation quality.
 
+--- 
+
+### Model Approach
+
+The recommendation system follows a content-based retrieval approach, meaning that for each user, the model builds a profile from the titles they have already watched, then compares that profile against all unwatched titles in the filtered Netflix dataset.
+
+The final score combines:
+
+* **`Description TF-IDF Similarity`**: Measures word-level overlap between the user's watched-title descriptions and candidate-title descriptions.
+* **`Word2Vec Similarity`**: Captures broader semantic similarity between descriptions.
+* **`Genre Similarity`**: Compares the user's watched genres with candidate-title genres.
+* **`Country Similarity`**: Lightly accounts for production-country patterns.
+* **`Genre-overlap Bonus`**: Gives an extra boost to titles whose genres directly overlap with the user's watched-title genres.
+
+Which are used to create scoring formula:
+
+```python
+score =
+    0.30 * description_tfidf_similarity
+  + 0.30 * word2vec_description_similarity
+  + 0.30 * genre_tfidf_similarity
+  + 0.10 * country_tfidf_similarity
+  + 0.10 * genre_overlap_bonus
+```
 
 ## Installation
 
 
-## Usage
+### Usage
 
 
 ## Evaluation & Results

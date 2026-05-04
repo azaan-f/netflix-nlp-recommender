@@ -87,13 +87,14 @@ pip install numpy pandas nltk gensim pillow
 python netflix_ui.py
 ```
 
-The UI displays the model's recommendations in a simple Netflix-inspired layout that uses the same recommendation pipeline from the `src/` folder and shows the top recommended titles for a selected user profile. Upon running `netflix_ui.py`, it should look something like this. From here, six different test users can be selected using the top-right profile and their recommendations can be visualized: <img width="1919" height="990" alt="image" src="https://github.com/user-attachments/assets/ae601d07-dd62-49ef-939e-0d95eb300d99" />
+The UI displays the model's recommendations in a simple Netflix-inspired layout that uses the same recommendation pipeline from the `src/` folder and shows the top recommended titles for a selected user profile. Upon running `netflix_ui.py`, six different test users can be selected using the top-right profile and their recommendations can be visualized: <p align="center"> <img width="70%" alt="Netflix-style recommendation UI" src="https://github.com/user-attachments/assets/ae601d07-dd62-49ef-939e-0d95eb300d99" /> </p> <p align="center"><em>Main recommendation UI showing top recommendations for a selected user.</em></p>
 
+<br clear="center"/>
 
-Additionally, a title can be clicked and inspected to bring up a preprocess description and will look as such : 
- <img width="935" height="682" alt="image" src="https://github.com/user-attachments/assets/62ecf8b9-5ebe-485c-b844-60d13460e150" />
+Additionally, a title can be clicked and inspected to bring up a preprocess description, which will look like this:
+<p align="center"> <img width="65%" alt="Recommendation detail window" src="https://github.com/user-attachments/assets/62ecf8b9-5ebe-485c-b844-60d13460e150" /> </p> <p align="center"><em>Detail view shown after clicking a recommended title.</em></p>
 
-
+<br clear="center"/>
 
 **To run the recommendation and evaluation pipeline:**
 

@@ -113,7 +113,7 @@ The recommender was evaluated using held-out titles from the synthetic user data
 
 <img align="right" width="30%" alt="terminal output" src="https://github.com/user-attachments/assets/9186a122-75f9-44dd-baf1-8cd28b2bec23" />
 
-Using the current scoring setup, the model captures broad content similarity but often ranks the exact held-out titles outside the top recommendations. This suggests that the system is better at identifying related titles than sharply ranking the exact evaluation titles near the top.
+The model produced an average **Precision@25 of 0.0040** and an average **Recall@25 of 0.0250** across 60 users. Although an improvement from the milestone, this means that only a small portion of the exact held-out evaluation titles appeared within the top 25 recommendations. However, because each user has only a few held-out titles and the system is fully content-based, these are strict evaluation measures. The results suggest that the model is better at identifying broadly related titles than consistently ranking the exact evaluation titles near the very top.
 
 <br clear="center"/>
 

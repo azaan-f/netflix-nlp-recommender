@@ -42,7 +42,7 @@ The final score combines:
 * **`Country Similarity`**: Lightly accounts for production-country patterns.
 * **`Genre-overlap Bonus`**: Gives an extra boost to titles whose genres directly overlap with the user's watched-title genres.
 
-Which are used to create scoring formula:
+Which are used to create the scoring formula:
 
 ```python
 score =
@@ -53,10 +53,50 @@ score =
   + 0.10 * genre_overlap_bonus
 ```
 
-## Installation
+## Installation & Usage
 
+### Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git
+cd YOUR-REPO-NAME
+```
+
+And install the necessary packages:
+
+```bash
+pip install numpy pandas nltk gensim
+```
+
+#### **Note — The following packages were also used, but shouldn't require installation:*
+```python
+numpy
+pandas
+nltk
+tkinter
+```
+---
 
 ### Usage
+
+**To launch the Netflix-style recommendation UI:**
+
+```bash
+python netflix_ui.py
+```
+
+The UI displays the model's recommendations in a simple Netflix-inspired layout that uses the same recommendation pipeline from the src/ folder and shows the top recommended titles for a selected user profile.
+
+**To run the recommendation and evaluation pipeline:**
+
+```bash
+python main.py
+```
+<img align="right" width="50%" alt="terminal output" src="https://github.com/user-attachments/assets/a9bd62b0-13f3-47d4-b8fd-0e8499dcacec" />
+
+This script loads the filtered Netflix title dataset and user dataset, builds the TF-IDF and Word2Vec features, generates recommendations, and evaluates the model using Precision@K and Recall@K. For example, here are the results for the first user in the dataset after running `main.py`:
 
 
 ## Evaluation & Results

@@ -1,4 +1,4 @@
-# <img style="width:4%;" src=https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png> Enhanced Netflix Recommendation System (CS 410: Text Information Systems Final Project — Group 11)
+# <img style="width:4%;" src=https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png> Enhanced Netflix Recommendation System (CS 410: Text Information Systems Final Project — Group 21)
 
 Netflix's current recommendation system estimates how likely a user is to enjoy a title based on interactions with the service. Netflix also considers factors such as what members with similar tastes have watched, the time of day a user watches, preferred languages, viewing devices, and how long a user engages with individual titles. This project explores an NLP-based approach to recommendation by using title metadata and user watch history to generate content-based recommendations. The goal is to apply concepts from **CS 410: Text Information Systems**, including TF-IDF, Word2Vec, and similarity-based retrieval.
 
